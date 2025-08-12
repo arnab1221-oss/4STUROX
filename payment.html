@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>STUROX - Payment</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>STUROX - Payment</h1>
+  </header>
+  <main>
+    <section>
+      <h2>Pay using UPI</h2>
+      <p>UPI ID: <strong>8972548589@ibl</strong></p>
+      <img src="OR_CODE.jpeg" alt="UPI QR Code" style="max-width:250px; border:1px solid #ccc; margin:10px 0;" />
+      <p>Click below to pay instantly via popular apps:</p>
+      <ul class="payment-links">
+        <li><a href="upi://pay?pa=8972548589@ibl" target="_blank" rel="noopener">PhonePe / Other UPI apps</a></li>
+        <li><a href="https://paytm.me/8972548589" target="_blank" rel="noopener">Paytm</a></li>
+        <li><a href="https://m.p-y.tm/8972548589" target="_blank" rel="noopener">Paytm Mobile</a></li>
+      </ul>
+    </section>
+    <section>
+      <form id="paymentForm">
+        <label for="screenshot">Upload payment screenshot (optional):</label>
+        <input type="file" id="screenshot" name="screenshot" accept="image/*" />
+        <label for="shareEmail">Share screenshot via email (optional):</label>
+        <input type="checkbox" id="shareEmail" name="shareEmail" />
+        <button type="submit">Submit Order</button>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <p>© 2025 STUROX</p>
+  </footer>
+  <script>
+    function sendNotificationEmail(data) {
+      // This is a placeholder for server-side email notification
+      // For now we use mailto fallback
+      let mailBody = 'New order details:\n';
+      mailBody += 'Name: ' + data.orderName + '\n';
+      mailBody += 'Roll ID: ' + data.orderRollId + '\n';
+      mailBody += 'Black & White Pages: ' + data.bwPages + '\n';
+      mailBody += 'Colour Pages: ' + data.colorPages + '\n';
+      mailBody += 'Total Price: Rs. ' + data.totalPrice + '\n';
+      mailBody += 'Delivery Name: ' + data.deliveryName + '\n';
+      mailBody += 'Delivery Phone: ' + data.deliveryPhone + '\n';
+      mailBody += 'Delivery Address: ' + data.deliveryAddress + '\n';
+      mailBody += 'Delivery Pin: ' + data.deliveryPin + '\n';
+      mailBody += 'Uploaded Files: ' + data.uploadFiles.join(', ') + '\n';
+      mailBody += '---\n';
+      mailBody += 'User confirmed payment and submitted order.';
+
+      const mailtoLink = 'mailto:sturox528@gmail.com?subject=New Order from ' + encodeURIComponent(data.orderName) + '&body=' + encodeURIComponent(mailBody);
+      window.location.href = mailtoLink;
+    }
+
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const shareEmail = document.getElementById('shareEmail').checked;
+      const screenshotInput = document.getElementById('screenshot');
+      // Retrieve stored session data
+      const orderName = sessionStorage.getItem('order_name') || '';
+      const orderRollId = sessionStorage.getItem('order_rollId') || '';
+      const bwPages = sessionStorage.getItem('order_bwPages') || '0';
+      const colorPages = sessionStorage.getItem('order_colorPages') || '0';
+      const totalPrice = sessionStorage.getItem('order_totalPrice') || '0';
+      const deliveryName = sessionStorage.getItem('delivery_fullName') || '';
+      const deliveryPhone = sessionStorage.getItem('delivery_phoneNumber') || '';
+      const deliveryAddress = sessionStorage.getItem('delivery_address') || '';
+      const deliveryPin = sessionStorage.getItem('delivery_pinCode') || '';
+      const uploadFiles = JSON.parse(sessionStorage.getItem('upload_files') || '[]');
+
+      const data = {
+        orderName, orderRollId, bwPages, colorPages, totalPrice,
+        deliveryName, deliveryPhone, deliveryAddress, deliveryPin,
+        uploadFiles
+      };
+
+      if (shareEmail) {
+        sendNotificationEmail(data);
+      } else {
+        alert('Thank you for your order! We will contact you soon.');
+        // Clear sessionStorage
+        sessionStorage.clear();
+        // Redirect to home page
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>

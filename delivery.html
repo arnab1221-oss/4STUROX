@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>STUROX - Delivery Details</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>STUROX - Delivery Details</h1>
+  </header>
+  <main>
+    <form id="deliveryForm">
+      <label for="fullName">Full Name:</label>
+      <input type="text" id="fullName" name="fullName" required />
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="tel" id="phoneNumber" name="phoneNumber" required pattern="\d{10}" placeholder="10 digit number" />
+      <label for="address">Full Address:</label>
+      <textarea id="address" name="address" rows="3" required></textarea>
+      <label for="pinCode">Pin Code:</label>
+      <input type="text" id="pinCode" name="pinCode" required pattern="\d{6}" placeholder="6 digit pin code" />
+      <button type="submit">Next</button>
+    </form>
+  </main>
+  <footer>
+    <p>© 2025 STUROX</p>
+  </footer>
+  <script>
+    document.getElementById('deliveryForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const fullName = document.getElementById('fullName').value.trim();
+      const phoneNumber = document.getElementById('phoneNumber').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const pinCode = document.getElementById('pinCode').value.trim();
+      if(!fullName || !phoneNumber || !address || !pinCode) {
+        alert('Please fill all fields.');
+        return;
+      }
+      sessionStorage.setItem('delivery_fullName', fullName);
+      sessionStorage.setItem('delivery_phoneNumber', phoneNumber);
+      sessionStorage.setItem('delivery_address', address);
+      sessionStorage.setItem('delivery_pinCode', pinCode);
+      window.location.href = 'order.html';
+    });
+  </script>
+</body>
+</html>

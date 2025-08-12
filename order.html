@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>STUROX - Order Details</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>STUROX - Place Your Order</h1>
+  </header>
+  <main>
+    <form id="orderForm">
+      <label for="orderName">Name:</label>
+      <input type="text" id="orderName" name="orderName" required />
+      <label for="orderRollId">Roll ID:</label>
+      <input type="text" id="orderRollId" name="orderRollId" required />
+      <label for="bwPages">Number of Black & White Pages:</label>
+      <input type="number" id="bwPages" name="bwPages" value="0" min="0" required />
+      <label for="colorPages">Number of Colour Pages:</label>
+      <input type="number" id="colorPages" name="colorPages" value="0" min="0" required />
+      <p>Total Price: Rs. <span id="totalPrice">0</span></p>
+      <label>
+        <input type="checkbox" id="confirmOrder" required /> I confirm that I want to order and will pay the payment.
+      </label>
+      <button type="submit">Next</button>
+    </form>
+  </main>
+  <footer>
+    <p>© 2025 STUROX</p>
+  </footer>
+  <script>
+    const bwInput = document.getElementById('bwPages');
+    const colorInput = document.getElementById('colorPages');
+    const totalPriceEl = document.getElementById('totalPrice');
+    const priceBW = 1;
+    const priceColor = 3;
+
+    function updateTotal() {
+      const bw = parseInt(bwInput.value) || 0;
+      const color = parseInt(colorInput.value) || 0;
+      const total = bw * priceBW + color * priceColor;
+      totalPriceEl.textContent = total.toFixed(2);
+    }
+
+    bwInput.addEventListener('input', updateTotal);
+    colorInput.addEventListener('input', updateTotal);
+    updateTotal();
+
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!document.getElementById('confirmOrder').checked) {
+        alert('Please confirm your order by checking the box.');
+        return;
+      }
+      const orderName = document.getElementById('orderName').value.trim();
+      const orderRollId = document.getElementById('orderRollId').value.trim();
+      const bwPages = parseInt(bwInput.value);
+      const colorPages = parseInt(colorInput.value);
+      const totalPrice = bwPages * priceBW + colorPages * priceColor;
+
+      if (!orderName || !orderRollId || totalPrice <= 0) {
+        alert('Please fill all fields and order at least one page.');
+        return;
+      }
+
+      sessionStorage.setItem('order_name', orderName);
+      sessionStorage.setItem('order_rollId', orderRollId);
+      sessionStorage.setItem('order_bwPages', bwPages);
+      sessionStorage.setItem('order_colorPages', colorPages);
+      sessionStorage.setItem('order_totalPrice', totalPrice.toFixed(2));
+
+      window.location.href = 'payment.html';
+    });
+  </script>
+</body>
+</html>
