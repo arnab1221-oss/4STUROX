@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Document</title>
+</head>
+<body>
+  <h2>Upload Document</h2>
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <label>Name:</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label>Roll Number (or ID):</label><br>
+    <input type="text" name="roll" required><br><br>
+
+    <label>Section:</label><br>
+    <input type="text" name="section" required><br><br>
+
+    <label>Upload File:</label><br>
+    <input type="file" name="file" required><br><br>
+
+    <label>
+      <input type="checkbox" name="confirm" required>
+      I have uploaded the file and want to submit.
+    </label><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
